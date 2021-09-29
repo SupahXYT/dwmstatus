@@ -4,7 +4,7 @@ DEPS = hardware.h
 
 
 %.o: %.c $(DEPS)
-	$(CC) -c  ${CFLAGS} -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 dwmstatus: hardware.o status.o 
 	$(CC) ${CFLAGS} -o dwmstatus hardware.o status.o
