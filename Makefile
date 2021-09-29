@@ -10,9 +10,12 @@ PREFIX=/usr/local/
 dwmstatus: hardware.o status.o 
 	$(CC) ${CFLAGS} -o dwmstatus hardware.o status.o
 
-install:
-	mkdir -p $(DESTDIR)$(DESTPREFIX)/bin
-	cp dwmstatus $(DESTDIR)$(PREFIX)/bin/dwmstatus
+install: dwmstatus 
+	mkdir -p /usr/local/bin
+	cp dwmstatus /usr/local/bin/dwmstatus
 
-uninstall
+uninstall:
+	@rm -f /usr/local/bin/dwmstatus
 
+clean:
+	@rm -f hardware.o status.o dwmstatus
