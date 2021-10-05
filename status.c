@@ -73,21 +73,17 @@ int main(void) {
   char status[200];
   char *time;
   char *sig;
-  char *battery;
 
   for (;; true) {
     time = mktimes();
     sig = mksigs();
-    battery = baticon();
 
-    sprintf(status, "[%s][\uf2db %0.2Lf%%][%s %d%%] %s ", sig, cpu(), battery,
-            capacity(), time);
+    sprintf(status, "|\x01[%s][\uf2db %0.2Lf%%]<\x02%s", sig, cpu(), time);
 
     XStoreName(dpy, DefaultRootWindow(dpy), status);
     XSync(dpy, False);
 
     free(time);
     free(sig);
-    free(battery);
   }
 }
