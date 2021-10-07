@@ -9,6 +9,7 @@ int capacity(void) {
   FILE *sys = fopen("/sys/class/power_supply/BAT0/capacity", "r");
   char tmp[3];
 
+  fclose(sys);
   return atoi(fgets(tmp, sizeof(tmp), sys));
 }
 
@@ -17,7 +18,8 @@ bool charging(void) {
   char tmp[10];
 
   char *status = fgets(tmp, sizeof(tmp), sys);
-  return strcmp(status, "Charging\n");
+  fclose(sys);
+  return strcmp(status, "Charging\n") || strcmp(status, "Full\n");
 }
 
 int signal() {

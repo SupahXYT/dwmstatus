@@ -39,26 +39,18 @@ char *baticon(void) {
                               "\uf57e\uf57f\uf580\uf581\uf578\uf583";
 
   char *baticon = calloc(4, sizeof(char));
+  int index;
 
-  if (charging()) {
-    int index = capacity() / 10;
-    for (int i = 0; i < 3; i++) {
-      baticon[i] = icons[i + index * 3];
-    }
-    return baticon;
-  }
-
-  if (capacity() == 100) {
-    int index = 10;
-    for (int i = 0; i < 3; i++) {
-      baticon[i] = icons[i + index * 3];
-    }
-    return baticon;
+  if (!charging()) {
+    index = capacity() / 10;
+  } else {
+    index = 11;
   }
 
   for (int i = 0; i < 3; i++) {
-    baticon[i] = icons[i + (11 * 3)];
+    baticon[i] = icons[i + index * 3];
   }
+
   return baticon;
 }
 
