@@ -19,7 +19,7 @@ bool charging(void) {
 
   char *status = fgets(tmp, sizeof(tmp), sys);
   fclose(sys);
-  return strcmp(status, "Charging\n") || strcmp(status, "Full\n");
+  return strcmp(status, "Charging\n") == 0 || strcmp(status, "Full\n") == 0;
 }
 
 int signal() {
