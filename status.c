@@ -65,17 +65,22 @@ int main(void) {
   char status[200];
   char *time;
   char *sig;
+  char *bat;
 
-  for (;; true) {
+  while (true) {
     time = mktimes();
     sig = mksigs();
+    bat = baticon();
 
-    sprintf(status, "|\x01[%s][\uf2db %0.2Lf%%]<\x02%s", sig, cpu(), time);
+    printf("asd");
+    sprintf(status, "|\x01[%s][\uf2db %0.2Lf%%][%s %d%%]<\x02%s", sig, cpu(),
+            bat, capacity(), time);
 
     XStoreName(dpy, DefaultRootWindow(dpy), status);
     XSync(dpy, False);
 
     free(time);
     free(sig);
+    free(bat);
   }
 }
