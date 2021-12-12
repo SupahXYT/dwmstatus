@@ -65,10 +65,12 @@ int main(void) {
   char status[200];
   char *time;
   char *sig;
+  char *bat;
 
   while (true) {
     time = mktimes();
     sig = mksigs();
+    bat = baticon();
 
     sprintf(status, "[%s][\uf2db %0.2Lf%%]   %s", sig, cpu(), time);
 
@@ -77,5 +79,6 @@ int main(void) {
 
     free(time);
     free(sig);
+    free(bat);
   }
 }
