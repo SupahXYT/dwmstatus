@@ -13,7 +13,7 @@ int capacity(void) {
   return atoi(fgets(tmp, sizeof(tmp), sys));
 }
 
-bool charging(void) {
+int charging(void) {
   FILE *sys = fopen("/sys/class/power_supply/BAT0/status", "r");
   char tmp[10];
 

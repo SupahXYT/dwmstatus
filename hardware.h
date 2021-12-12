@@ -1,5 +1,4 @@
-#include <stdbool.h>
 int signal();
 int capacity();
-bool charging();
+int charging();
 long double cpu();

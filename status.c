@@ -66,11 +66,11 @@ int main(void) {
   char *time;
   char *sig;
 
-  for (;; true) {
+  while (true) {
     time = mktimes();
     sig = mksigs();
 
-    sprintf(status, "|\x01[%s][\uf2db %0.2Lf%%]<\x02%s", sig, cpu(), time);
+    sprintf(status, "[%s][\uf2db %0.2Lf%%]   %s", sig, cpu(), time);
 
     XStoreName(dpy, DefaultRootWindow(dpy), status);
     XSync(dpy, False);
