@@ -45,7 +45,8 @@ long double cpu() {
   FILE *fp;
 
   fp = fopen("/proc/stat", "r");
-  fscanf(fp, "%*s %Lf %Lf %Lf %Lf", &a[0], &a[1], &a[2], &a[3]);
+  fscanf(fp, "%*s %Lf %Lf %Lf %Lf", a, (a + 1), (a + 2), (a + 3));
+  // fscanf(fp, "%*s %Lf %Lf %Lf %Lf", &a[0], &a[1], &a[2], &a[3]);
   fclose(fp);
   sleep(1);
 
