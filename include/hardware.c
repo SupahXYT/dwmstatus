@@ -44,28 +44,33 @@ static enum BatteryStatus battery_status(void) {
     fclose(fp);
   }
 
+  // printf("status: %c\n", fcstatus);
   switch (fcstatus) {
   case 'D':
+    // printf("status returned discharging\n");
     return Discharging;
   case 'C':
+    // printf("status returned charging\n");
     return Charging;
   case 'F':
+    // printf("status returned full\n");
     return Full;
   default:
+    // printf("status returned unknown\n");
     return Unknown;
   }
 }
 
-static char *battery_icon(void) {
-  static char *path = BATT_PATH "/status";
-  enum BatteryStatus status = battery_status();
-
+static char *battery_icon(enum BatteryStatus status) {
   if (status == Discharging || status == Full) {
-    int capacity = battery_capacity();
-    return battery_discharging[capacity / 10];
+    // printf("icon set to indexed\n");
+    int index = battery_capacity() / 10;
+    return battery_discharging[index];
   } else if (status == Charging) {
+    // printf("icon set charging\n");
     return battery_charging;
   } else {
+    // printf("icon set unknown\n");
     return battery_unknown;
   }
 }
@@ -73,9 +78,9 @@ static char *battery_icon(void) {
 Battery get_battery(void) {
   Battery battery;
 
-  battery.icon = battery_icon();
   battery.capacity = battery_capacity();
   battery.status = battery_status();
+  battery.icon = battery_icon(battery.status);
 
   return battery;
 }
