@@ -1,8 +1,10 @@
 #include "hardware.h"
 #include "../config.h"
 #include <stdio.h>
+#include <unistd.h>
 
 /* Nerdfont icons */
+const char *cpu_icon = "\ue266";
 static char *battery_alert = "\uf582";
 static char *battery_unknown = "\uf590";
 static char *battery_charging = "\uf583";
@@ -85,41 +87,72 @@ Battery get_battery(void) {
   return battery;
 }
 
-// #define MAX_BUF_SIZE 128
-int main(void) {
-  Battery battery = get_battery();
-  printf("[%s %d%%]\n", battery.icon, battery.capacity);
+float cpu(void) {
+  float a[4], b[4], loadavg;
+  FILE *fp;
 
-  // WirelessDevice dev = get_wireless_device(NET_WIFI);
-  // printf("%s stats:\n"
-  //        "status:\t%d\n"
-  //        "signal:\t%d\n"
-  //        "icon:\t%s\n",
-  //        NET_WIFI, dev.status, dev.signal, dev.icon);
+  fp = fopen("/proc/stat", "r");
+  if (fp == NULL) {
+    fprintf(stderr, "Could not open /proc/stat\n");
+    return -1;
+  } else {
+    fscanf(fp, "%*s %f %f %f %f", a, (a + 1), (a + 2), (a + 3));
+    fclose(fp);
+  }
 
-  // int bol = 0;
-  // if ((bol = 1)) {
-  //   printf("True\n");
-  // }
+  sleep(1);
 
-  // FILE *f = fopen("wireless", "r");
+  fp = fopen("/proc/stat", "r");
+  if (fp == NULL) {
+    fprintf(stderr, "Could not open /proc/stat\n");
+    return -1;
+  } else {
+    fscanf(fp, "%*s %f %f %f %f", &b[0], &b[1], &b[2], &b[3]);
+    fclose(fp);
 
-  // int a, b;
-  // char buf[MAX_BUF_SIZE];
-  // // fgets(buf, MAX_BUF_SIZE, f);
-  // // fseek(f, 20, SEEK_CUR);
-  // int no = 211;
-  // // fgets(buf, 4, f);
-  // // fscanf(f, "%d", &no);
+    loadavg =
+        (((b[0] + b[1] + b[2]) - (a[0] + a[1] + a[2])) /
+         ((b[0] + b[1] + b[2] + b[3]) - (a[0] + a[1] + a[2] + a[3])) * 100);
 
-  // // fgets(buf, MAX_BUF_SIZE, f);
-  // // fgets(buf, MAX_BUF_SIZE, f);
-  // // fscanf(f, "%s", buf);
-  // fscanf(f, "%[^\n]%*[^\n]", buf);
-  // printf("%s\n", buf);
-  // // fscanf(f, "%[^\n] ", buf);
-  // fscanf(f, "%*s %*s %s ", buf);
-  // // fscanf(f, "%s %d", buf, &no);
-  // printf("%s, %d\n", buf, no);
-  // fclose(f);
+    return loadavg;
+  }
 }
+
+// #define MAX_BUF_SIZE 128
+// int main(void) {
+//   Battery battery = get_battery();
+//   printf("[%s %d%%]\n", battery.icon, battery.capacity);
+
+// WirelessDevice dev = get_wireless_device(NET_WIFI);
+// printf("%s stats:\n"
+//        "status:\t%d\n"
+//        "signal:\t%d\n"
+//        "icon:\t%s\n",
+//        NET_WIFI, dev.status, dev.signal, dev.icon);
+
+// int bol = 0;
+// if ((bol = 1)) {
+//   printf("True\n");
+// }
+
+// FILE *f = fopen("wireless", "r");
+
+// int a, b;
+// char buf[MAX_BUF_SIZE];
+// // fgets(buf, MAX_BUF_SIZE, f);
+// // fseek(f, 20, SEEK_CUR);
+// int no = 211;
+// // fgets(buf, 4, f);
+// // fscanf(f, "%d", &no);
+
+// // fgets(buf, MAX_BUF_SIZE, f);
+// // fgets(buf, MAX_BUF_SIZE, f);
+// // fscanf(f, "%s", buf);
+// fscanf(f, "%[^\n]%*[^\n]", buf);
+// printf("%s\n", buf);
+// // fscanf(f, "%[^\n] ", buf);
+// fscanf(f, "%*s %*s %s ", buf);
+// // fscanf(f, "%s %d", buf, &no);
+// printf("%s, %d\n", buf, no);
+// fclose(f);
+// }

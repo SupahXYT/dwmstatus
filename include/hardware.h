@@ -1,4 +1,5 @@
 #define ICON_SIZE 4
+#define THREADS 4
 
 enum BatteryStatus { Discharging, Charging, Full, Unknown };
 enum WirelessStatus { Disabled, Enabled };
