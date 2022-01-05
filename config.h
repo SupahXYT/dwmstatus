@@ -10,4 +10,5 @@
 #define BATT_PATH "/sys/class/power_supply/BAT0"
 
 /* Specify wireless device */
-#define NET_WIFI "wlan0"
+#define INTERFACE wlan0
+#define INTERFACE_S "wlan0"
